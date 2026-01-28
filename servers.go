@@ -37,6 +37,7 @@ type Server struct {
 	Username         string            `json:"username,omitempty"`
 	Password         string            `json:"password"`
 	Image            string            `json:"image,omitempty"`
+	DeployedImage    DeployedImage     `json:"deployed_image,omitempty"`
 	SpotInstance     bool              `json:"spot_instance"`
 	BGP              ServerBGP         `json:"bgp,omitempty"`
 	Project          Project           `json:"project,omitempty"`
@@ -58,6 +59,11 @@ type Server struct {
 type BMC struct {
 	User     string `json:"user,omitempty"`
 	Password string `json:"password,omitempty"`
+}
+
+type DeployedImage struct {
+	Name string `json:"name,omitempty"`
+	Slug string `json:"slug,omitempty"`
 }
 
 type ReinstallServer struct {
