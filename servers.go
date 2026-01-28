@@ -69,6 +69,7 @@ type ReinstallServerFields struct {
 	Image           string   `json:"image"`
 	Hostname        string   `json:"hostname,omitempty"`
 	Password        string   `json:"password"`
+	IPXE            string   `json:"ipxe,omitempty"`
 	SSHKeys         []string `json:"ssh_keys,omitempty"`
 	UserData        string   `json:"user_data,omitempty"`
 	OSPartitionSize int      `json:"os_partition_size,omitempty"`
@@ -106,6 +107,7 @@ type CreateServer struct {
 	Tags            *map[string]string `json:"tags,omitempty"`
 	SpotInstance    bool               `json:"spot_market"`
 	OSPartitionSize int                `json:"os_partition_size,omitempty"`
+	IPXE            string             `json:"ipxe,omitempty"`
 	StorageID       int                `json:"storage_id,omitempty"`
 	Cycle           string             `json:"cycle,omitempty"`
 	DiscountCode    string             `json:"discount,omitempty"`
