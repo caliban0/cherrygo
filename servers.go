@@ -25,6 +25,7 @@ type ServersService interface {
 	ListSSHKeys(serverID int, opts *GetOptions) ([]SSHKey, *Response, error)
 	ResetBMCPassword(serverID int) (Server, *Response, error)
 	ListCycles(opts *GetOptions) ([]ServerCycle, *Response, error)
+	Upgrade(serverID int, plan string) (Server, *Response, error)
 }
 
 // Server response object
@@ -91,6 +92,11 @@ type ServerAction struct {
 // PowerState fields
 type PowerState struct {
 	Power string `json:"power"`
+}
+
+type UpgradeServer struct {
+	ServerAction
+	Plan string `json:"plan"`
 }
 
 // CreateServer fields for ordering new server
@@ -221,6 +227,19 @@ func (s *ServersClient) Reinstall(serverID int, fields *ReinstallServerFields) (
 	var trans Server
 
 	request := &ReinstallServer{ServerAction{Type: "reinstall"}, fields}
+	path := fmt.Sprintf("%s/%d/actions", baseServerPath, serverID)
+	resp, err := s.client.MakeRequest("POST", path, request, &trans)
+
+	return trans, resp, err
+}
+
+func (s *ServersClient) Upgrade(serverID int, plan string) (Server, *Response, error) {
+	var trans Server
+
+	request := &UpgradeServer{
+		ServerAction: ServerAction{Type: "upgrade"},
+		Plan:         plan,
+	}
 	path := fmt.Sprintf("%s/%d/actions", baseServerPath, serverID)
 	resp, err := s.client.MakeRequest("POST", path, request, &trans)
 
