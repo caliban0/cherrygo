@@ -8,20 +8,25 @@ You can view Cherry Servers API docs here: [https://api.cherryservers.com/doc](h
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Authentication](#authentication)
-- [Examples](#examples)
-  - [Get teams](#get-teams)
-  - [Get projects](#get-projects)
-  - [Get plans](#get-plans)
-  - [Get images](#get-images)
-  - [Request new server](#request-new-server)
+- [cherrygo](#cherrygo)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Authentication](#authentication)
+    - [Examples](#examples)
+      - [Get teams](#get-teams)
+      - [Get projects](#get-projects)
+      - [Get plans](#get-plans)
+      - [Get images](#get-images)
+      - [Request new server](#request-new-server)
+  - [Debug](#debug)
+  - [Release process](#release-process)
+  - [License](#license)
 
 ## Installation
 
 Add the library as a dependency to your project:
 ```
-go get github.com/cherryservers/cherrygo/v3
+go get github.com/cherryservers/cherrygo/v3a
 ```
 
 ### Authentication
