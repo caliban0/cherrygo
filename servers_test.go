@@ -380,11 +380,6 @@ func TestServer_EnterRescueMode(t *testing.T) {
 	setup()
 	defer teardown()
 
-	requestBody := map[string]interface{}{
-		"type":     "enter-rescue-mode",
-		"password": "abcdef",
-	}
-
 	expected := Server{
 		ID:     383531,
 		Status: "rescue mode",
@@ -393,27 +388,22 @@ func TestServer_EnterRescueMode(t *testing.T) {
 	mux.HandleFunc("/v1/servers/383531/actions", func(writer http.ResponseWriter, request *http.Request) {
 		testMethod(t, request, http.MethodPost)
 
-		var v map[string]interface{}
-		err := json.NewDecoder(request.Body).Decode(&v)
-		if err != nil {
-			t.Fatalf("decode json: %v", err)
-		}
+		body, handleErr := io.ReadAll(request.Body)
+		require.NoError(t, handleErr)
 
-		if !reflect.DeepEqual(v, requestBody) {
-			t.Errorf("Request body\n sent %#v\n expected %#v", v, requestBody)
-		}
+		assert.Equal(t, "{\"type\":\"enter-rescue-mode\",\"password\":\"abcdef\",\"ssh_keys\":[1]}\n", string(body))
 
 		jsonBytes, _ := json.Marshal(expected)
 		response := string(jsonBytes)
 
-		_, err = fmt.Fprint(writer, response)
-		require.NoError(t, err)
+		_, handleErr = fmt.Fprint(writer, response)
+		require.NoError(t, handleErr)
 	})
 
-	_, _, err := testClient.Servers.EnterRescueMode(t.Context(), 383531, &RescueServerFields{Password: "abcdef"})
-	if err != nil {
-		t.Errorf("Server.EnterRescueMode returned %+v", err)
-	}
+	srv, _, err := testClient.Servers.EnterRescueMode(t.Context(), 383531, &RescueServerFields{Password: "abcdef", SSHKeys: []int{1}})
+	require.NoError(t, err)
+
+	assert.Equal(t, expected, srv)
 }
 
 func TestServer_ExitRescueMode(t *testing.T) {

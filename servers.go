@@ -159,7 +159,11 @@ type rescueServer struct {
 
 // RescueServerFields holds the fields for a server rescue request.
 type RescueServerFields struct {
-	Password string `json:"password"`
+	Password string `json:"password,omitempty"`
+
+	// SSHKeys IDs to add to the rescue mode configuration.
+	// Key based authentication is only supported on virtual servers.
+	SSHKeys []int `json:"ssh_keys,omitempty"`
 }
 
 // ServerAction fields for performed action on server
